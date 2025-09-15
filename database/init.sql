@@ -49,6 +49,6 @@ CREATE OR REPLACE VIEW usuarios_por_dominio AS
 SELECT 
     split_part(email, '@', 2) AS dominio,
     COUNT(*) AS total_usuarios
-FROM usuarios
+FROM users
 GROUP BY dominio
 ORDER BY total_usuarios DESC;

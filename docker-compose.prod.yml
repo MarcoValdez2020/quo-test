@@ -1,0 +1,31 @@
+
+services:
+  postgres: # Servicio de base de datos PostgreSQL
+    image: postgres:17-alpine3.21 # Imagen de PostgreSQL
+    container_name: quo-test-postgres-container # Nombre de nuestro contenedor
+    restart: always # Reiniciar el contenedor automáticamente (para evitar caíadas por reinicios del sistema)
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - quo-postgres-container-data:/var/lib/postgresql/data # Volumen para persistencia de datos
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql # Script SQL para inicializar la base de datos
+    networks:
+      - red-prueba-tecnica # Conexión a la red de producción
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"] # Comando para verificar la salud del contenedor
+      interval: 2s # Intervalo entre chequeos de salud
+      timeout: 5s # Tiempo de espera para el chequeo de salud
+      retries: 3 # Número de reintentos antes de marcar el contenedor como no saludable
+
+volumes: # Creación de volúmenes
+  quo-postgres-container-data: # Creación de un volumen para persistir datos de PostgreSQL
+    name: quo-postgres-container-data  # Nombre asignado al volumen
+
+networks:
+  red-prueba-tecnica:
+    name: red-prueba-tecnica      # Nombre asignado a la red
+    driver: bridge                # Tipo de red (bridge permite comunicación entre contenedores y host)
