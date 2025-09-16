@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Field
-from datetime import datetime
+from datetime import datetime, UTC
 from uuid import UUID, uuid4
 
 class User(SQLModel, table=True):
@@ -19,4 +19,4 @@ class User(SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True, description="Identificador único del usuario")
     nombre: str = Field(max_length=100, nullable=False, description="Nombre completo del usuario")
     email: str = Field(max_length=255, nullable=False, unique=True, description="Email único del usuario")
-    fecha_registro: datetime = Field(default_factory=datetime.utcnow, description="Fecha de registro")
+    fecha_registro: datetime = Field(default_factory=lambda: datetime.now(UTC), description="Fecha de registro")
