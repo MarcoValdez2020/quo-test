@@ -91,7 +91,7 @@ docker-compose --env-file .env.prod -f docker-compose.prod.yml up --build
 # - Swagger Docs: http://localhost:8000/docs
 ```
 
-### 3. Verificar instalación
+### 4. Verificar instalación
 ```bash
 # Health check
 curl http://localhost:8000/health
@@ -219,7 +219,7 @@ ORDER BY total_usuarios DESC;
 ### Conectar a PostgreSQL directamente
 ```bash
 # Conectar al contenedor de PostgreSQL
-docker exec -it quo-test-postgres-container psql -U quo_user -d quo_db
+docker exec -it quo-test-postgres-container psql -U postgres -d quo_test
 
 # Ejecutar queries especiales
 \d users                           -- Ver estructura tabla
